@@ -35,7 +35,7 @@ export class AppServer extends ServerEnvConfig {
 
     async dbConnection () {
         const logger: LoggerFormat = new LoggerFormat();
-        return await new DbConnexionConfig(logger).databasePostgresDBConnectionConfig();
+        return await new DbConnexionConfig(logger).databasePostgresDBConnectionConfig('');
     }
 
     public listen () {

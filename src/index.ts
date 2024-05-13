@@ -7,6 +7,8 @@ import colors from "ansi-colors";
 import path from "path";
 import fs, { existsSync, mkdirSync } from "fs";
 import databaseSelectedFunctions from "./functions/databaseSelected.functions";
+import askProjectNameUtils from "./utils/askProjectName.utils";
+import askInstallingRSAKeypairUtils from "./utils/askInstallingRSAKeypair.utils";
 
 
 export async function installer() {
@@ -14,26 +16,7 @@ export async function installer() {
     const exec = promisify(cp.exec);
     const rm   = promisify(fs.rm);
 
-    const projectName = await clackCLI.text(
-        {
-            message: "Enter the name's project :",
-            placeholder: "opticore",
-            validate: (value: string): string | undefined => {
-                let pattern: RegExp = new RegExp("^[a-z_-]+$");
-                if (!value) {
-                    return "Please database name can't be empty.";
-                } if (!pattern.test(value)) {
-                    return "Please enter a valide database name.";
-                }
-            },
-        }
-    );
-
-    if (clackCLI.isCancel(projectName)) {
-        console.log(`${colors.bgRed(`${colors.white("Operation cancelled.")}`)}`);
-        process.exit(0);
-    }
-
+    const projectName = await askProjectNameUtils();
     if (projectName) {
         const currentPath: string = process.cwd();
         const projectPath: string = path.join(currentPath, projectName);
@@ -65,7 +48,10 @@ export async function installer() {
             npmSpinner.succeed();
 
             await databaseSelectedFunctions(`${projectPath}/src/infrastructure/server/app.server.ts`);
+            await askInstallingRSAKeypairUtils();
+
             console.log(`${colors.cyan(`${colors.white(`${projectName} has been created successfully.`)}`)}`);
+            process.exit();
 
         } catch (err: any) {
             fs.rmSync(projectPath, { recursive: true, force: true });

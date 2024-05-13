@@ -1,2 +1,7 @@
 .idea/
 node_modules/
+dist/
+tsup.config.ts
+tsconfig.json
+.gitignore
+.npmignore

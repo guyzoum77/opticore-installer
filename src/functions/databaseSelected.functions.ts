@@ -1,56 +1,54 @@
-import clackCLI from "@clack/prompts";
-import colors from "ansi-colors";
-import fs from "fs";
 import path from "path";
+import {databaseCredentialsUtils} from "../utils/databaseCredentials.utils";
+import {askDBNameQuestion} from "../utils/askDBNameQuestion";
+import {databaseSelectedUtils} from "../utils/databaseSelected.utils";
+import mySqlUsecase from "../usecases/mySql.usecase";
+import mongoUsecase from "../usecases/mongo.usecase";
+import postgresUsecase from "../usecases/postgres.usecase";
+import colors from "ansi-colors";
 
 export default async function databaseSelectedFunctions(file: any) {
-    const databaseSelected =  await clackCLI.select({
-        message: 'Which database would you use ?',
-        initialValue: ['mysql'],
-        options: [
-            {label: 'MySQL', value: ['mysql']},
-            {label: 'Mongo DB', value: ['mongo_db']},
-            {label: 'Postgres', value: ['postgres']},
-        ],
-    });
+    const databaseSelected: string = await databaseSelectedUtils();
+    const dbCredentials = await databaseCredentialsUtils();
 
-    if (clackCLI.isCancel(databaseSelected)) {
-        console.log(`${colors.bgRed(`${colors.white('Operation cancelled.')}`)}`);
-        process.exit(0);
-    }
+    let dbName: string;
+    const filePath: string = path.join(__dirname, "../dist/utils/template");
 
-    let fileContent;
-    let getFileContent;
-    const filePath = path.join(__dirname, '../dist/utils/template');
-    switch (databaseSelected[0]) {
-        case 'mysql':
-            fileContent = filePath+'/appServerWithMySQLDBConfig.txt';
-            break;
-        case 'mongo_db':
-            fileContent = filePath+'/appServerWithMongoDBConfig.txt';
-            break;
-        case 'postgres':
-            fileContent = filePath+'/appServerWithPostgresDBConfig.txt';
-            break;
-    }
+    const dbHost: string | undefined = dbCredentials?.dbHost;
+    const dbPort: string | undefined = dbCredentials?.dbPort;
+    const dbUser: string | undefined = dbCredentials?.dbUser;
+    const dbPwd:  string | undefined = dbCredentials?.dbPwd;
 
-    try {
-        getFileContent = fs.readFileSync(`${fileContent}`, 'utf8');
-    } catch (err: any) {
-        console.log(`Error reading file: ${colors.bgRed(`${colors.white(`${err.message}`)}`)}`);
-    }
-
-    try {
-        fs.writeFile(
-            file,
-            `${getFileContent}`,
-            { flag: 'a+' }, (err: any) => {
-                if (err) {
-                    console.log(`${colors.bgRed(`${colors.white(`${err.message}`)}`)}`);
-                }
+    switch (databaseSelected) {
+        case "mysql":
+            if (dbCredentials !== undefined) {
+                dbName = await askDBNameQuestion();
+                mySqlUsecase(filePath+"/appServerWithMySQLDBConfig.txt",
+                    file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
+                console.log(`${colors.green(
+                    `Your database ${colors.bgGreen(`${colors.white(`${dbName}`)}`)} has been created successfully.`)}`
+                );
             }
-        );
-    } catch (err: any) {
-        console.log(`${colors.bgRed(`${colors.white(`${err.message}`)}`)}`);
+            break;
+        case "mongo_db":
+            if (dbCredentials !== undefined) {
+                dbName = await askDBNameQuestion();
+                await mongoUsecase(filePath+"/appServerWithMongoDBConfig.txt",
+                    file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
+                console.log(`${colors.green(
+                    `Your database ${colors.bgGreen(`${colors.white(`${dbName}`)}`)} has been created successfully.`)}`
+                );
+            }
+            break;
+        case "postgres":
+            if (dbCredentials !== undefined) {
+                dbName = await askDBNameQuestion();
+                await postgresUsecase(filePath+"/appServerWithPostgresDBConfig.txt",
+                    file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
+                console.log(`${colors.green(
+                    `Your database ${colors.bgGreen(`${colors.white(`${dbName}`)}`)} has been created successfully.`)}`
+                );
+            }
+            break;
     }
 }

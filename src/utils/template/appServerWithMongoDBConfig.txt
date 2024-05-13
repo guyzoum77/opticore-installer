@@ -9,8 +9,6 @@ import {
     serverExecutionTimeUtils
 } from "opticore-core-module";
 
-
-
 export class AppServer extends ServerEnvConfig {
     public app: express.Application = express();
 

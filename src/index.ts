@@ -47,8 +47,12 @@ export async function installer() {
             await exec("npm install");
             npmSpinner.succeed();
 
-            await databaseSelectedFunctions(`${projectPath}/src/infrastructure/server/app.server.ts`);
+            const databaseSelected = await databaseSelectedFunctions(`${projectPath}/src/infrastructure/server/app.server.ts`);
             await askInstallingRSAKeypairUtils();
+            const prismaOrm = await import("opticore-prisma-orm-installer");
+            if (databaseSelected !== undefined) {
+                await prismaOrm.initializePrismaFunction(projectPath, databaseSelected);
+            }
 
             console.log(`${colors.cyan(`${colors.white(`${projectName} has been created successfully.`)}`)}`);
             process.exit();

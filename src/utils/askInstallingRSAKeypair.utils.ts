@@ -5,7 +5,7 @@ export default async function askInstallingRSAKeypairUtils() {
     let ora = (await import("ora")).default;
     const asymmetricRSAKeypair =  await clackCLI.select({
         message: "Do you want install asymmetric rsa keypair ?",
-        initialValue: ["mysql"],
+        initialValue: ["rsa_keypair"],
         options: [
             {label: "Asymmetric RSA Keypair", value: ["rsa_keypair"]},
             {label: "I don't want it", value: ['no_rsa_keypair']},

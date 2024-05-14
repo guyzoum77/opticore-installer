@@ -96,7 +96,6 @@ export async function databaseCredentialsUtils() {
             }
 
             return { dbUser, dbPwd, dbHost, dbPort };
-            break;
         case "no_db_credentials":
             console.info(`${colors.bgCyan(`${colors.white(`You will have to manually set all the variable values in the .env file.`)}`)}`);
             break;

@@ -41,9 +41,9 @@ export async function databaseCredentialsUtils() {
                 process.exit(0);
             }
 
-            dbPwd = await clackCLI.text({
+            dbPwd = await clackCLI.password({
                 message: "Enter the password of database :",
-                placeholder: "dbtoto",
+                mask: "*",
                 validate: (value: string): string | undefined => {
                     let pattern: RegExp = new RegExp("(\\s)");
                     if (!value) {

@@ -1,9 +1,13 @@
 import mySQL from "mysql";
 import colors from "ansi-colors";
 import dotenv from "dotenv";
+import fs from "fs";
 
-export function createMySQLDatabase(databaseHost: string | undefined, databaseUser: string | undefined, databasePassword: string | undefined, databaseName: string, databasePort: number) {
+export function createMySQLDatabase(databaseHost: string | undefined, databaseUser: string | undefined,
+                                    databasePassword: string | undefined, databaseName: string,
+                                    databasePort: number, projectPath: any, projectName: any) {
     let connection: mySQL.Connection;
+
     try {
         connection = mySQL.createConnection({
             host: databaseHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST,
@@ -13,6 +17,7 @@ export function createMySQLDatabase(databaseHost: string | undefined, databaseUs
         });
     } catch (err: any) {
         console.error(`${colors.red(`There were problems creating a connection to the MySQL server. The error stack was : ${err.message}`)}`);
+        fs.rmSync(projectPath, { recursive: true, force: true });
         process.exit(0);
     }
 
@@ -35,20 +40,31 @@ export function createMySQLDatabase(databaseHost: string | undefined, databaseUs
                     console.error(`${colors.red(`${err.message}. Try to check if the port is correct.`)}`);
                     break;
             }
-        }
-
-        const createDatabaseQuery: string = `CREATE DATABASE IF NOT EXISTS ${databaseName}`;
-        connection.query(createDatabaseQuery, (err: mySQL.MysqlError | null, result: any) => {
-            if (err) {
-                console.error(`${colors.red(`Error creating database : ${err.message}`)}`);
-                process.exit(0);
-            }
-            connection.end((err: mySQL.MysqlError | undefined) => {
+            fs.rmSync(projectPath, { recursive: true, force: true });
+            process.exit(0);
+        } else {
+            const createDatabaseQuery: string = `CREATE DATABASE IF NOT EXISTS ${databaseName}`;
+            connection.query(createDatabaseQuery, async(err: mySQL.MysqlError | null, result: any) => {
+                let prismaOrm = await import("opticore-prisma-orm-installer");
                 if (err) {
-                    console.error(`${colors.red(`Error closing connection : ${err.message}`)}`);
+                    console.error(`${colors.red(`Error creating database : ${err.message}`)}`);
+                    fs.rmSync(projectPath, { recursive: true, force: true });
                     process.exit(0);
                 }
+                console.log(`${colors.green(
+                    `Your database ${colors.bgGreen(`${colors.white(`${databaseName}`)}`)} has been created successfully.`)}`
+                );
+                await prismaOrm.initializePrismaFunction(projectPath, "mysql");
+                console.log(`${colors.bgCyan(`${colors.white(`${projectName} has been created successfully.`)}`)}`);
+
+                connection.end((err: mySQL.MysqlError | undefined): void => {
+                    if (err) {
+                        console.error(`${colors.red(`Error closing connection : ${err.message}`)}`);
+                        fs.rmSync(projectPath, { recursive: true, force: true });
+                        process.exit(0);
+                    }
+                });
             });
-        });
+        }
     });
 }

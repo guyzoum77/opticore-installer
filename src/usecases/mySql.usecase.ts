@@ -10,7 +10,7 @@ export default function mySqlUsecase(fileContent: string,
                                      dbUser: string | undefined,
                                      dbPwd:  string | undefined,
                                      dbName: string,
-                                     dbCredentials: any) {
+                                     dbCredentials: any, projectPath: any, projectName: any, ) {
     createAppServerFileFunction(fileContent, file);
     createMySQLDatabase(
         dbHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST,
@@ -18,6 +18,8 @@ export default function mySqlUsecase(fileContent: string,
         dbPwd ?? dotenv.config()?.parsed?.DATA_BASE_PASSWORD,
         dbName ?? dotenv.config()?.parsed?.DATA_BASE_NAME,
         parseInt(dbPort!) ?? dotenv.config()?.parsed?.DATA_BASE_PORT,
+        projectPath,
+        projectName
     );
     updateEnvVariableUtils(
         dbName,

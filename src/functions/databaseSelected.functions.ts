@@ -8,7 +8,7 @@ import postgresUsecase from "../usecases/postgres.usecase";
 import colors from "ansi-colors";
 import createAppServerFileFunction from "./createAppServerFile.function";
 
-export default async function databaseSelectedFunctions(file: any) {
+export default async function databaseSelectedFunctions(file: any, projectPath: any, projectName: any) {
     let databaseSelected: string = await databaseSelectedUtils();
     let dbName: string;
     const filePath: string = path.join(__dirname, "../dist/utils/template");
@@ -41,28 +41,20 @@ export default async function databaseSelectedFunctions(file: any) {
             switch (databaseSelected) {
                 case "mysql":
                     dbName = await askDBNameQuestion();
-                    mySqlUsecase(filePath+"/appServerWithMySQLDBConfig.txt",
-                        file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
-                    console.log(`${colors.green(
-                        `Your database ${colors.bgGreen(`${colors.white(`${dbName}`)}`)} has been created successfully.`)}`
-                    );
-                    return databaseSelected;
+                    mySqlUsecase(
+                        filePath+"/appServerWithMySQLDBConfig.txt",
+                        file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials, projectPath, projectName);
+                    break;
                 case "mongodb":
                     dbName = await askDBNameQuestion();
-                    await mongoUsecase(filePath+"/appServerWithMongoDBConfig.txt",
+                    await mongoUsecase(
+                        filePath+"/appServerWithMongoDBConfig.txt",
                         file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
-                    console.log(`${colors.green(
-                        `Your database ${colors.bgGreen(`${colors.white(`${dbName}`)}`)} has been created successfully.`)}`
-                    );
-                    return databaseSelected;
+                    break;
                 case "postgresql":
                     dbName = await askDBNameQuestion();
-                    await postgresUsecase(filePath+"/appServerWithPostgresDBConfig.txt",
-                        file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
-                    console.log(`${colors.green(
-                        `Your database ${colors.bgGreen(`${colors.white(`${dbName}`)}`)} has been created successfully.`)}`
-                    );
-                    return databaseSelected;
+                    await postgresUsecase(filePath+"/appServerWithPostgresDBConfig.txt", file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
+                    break;
             }
         }
     }

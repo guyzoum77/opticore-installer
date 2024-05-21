@@ -15,6 +15,8 @@ export default async function databaseSelectedFunctions(file: any, projectPath: 
 
     if (databaseSelected === "other_db") {
         createAppServerFileFunction(filePath+"/appServerWithoutDbConfig.txt", file);
+        console.log(`databaseSelected into other_db is ${databaseSelected}`)
+
     } else  {
         const dbCredentials = await databaseCredentialsUtils();
         const dbHost: string | undefined = dbCredentials?.dbHost;
@@ -25,16 +27,16 @@ export default async function databaseSelectedFunctions(file: any, projectPath: 
         if (dbCredentials === undefined) {
             switch (databaseSelected) {
                 case "mysql":
-                    createAppServerFileFunction(filePath+"/appServerWithMySQLDBConfig.txt", file);
+                    createAppServerFileFunction(filePath + "/appServerWithMySQLDBConfig.txt", file);
                     break;
                 case "mongodb":
-                    createAppServerFileFunction(filePath+"/appServerWithMongoDBConfig.txt", file);
+                    createAppServerFileFunction(filePath + "/appServerWithMongoDBConfig.txt", file);
                     break;
                 case "postgresql":
-                    createAppServerFileFunction(filePath+"/appServerWithPostgresDBConfig.txt", file);
+                    createAppServerFileFunction(filePath + "/appServerWithPostgresDBConfig.txt", file);
                     break;
                 default:
-                    createAppServerFileFunction(filePath+"/appServerWithoutDbConfig.txt", file);
+                    createAppServerFileFunction(filePath + "/appServerWithoutDbConfig.txt", file);
                     break;
             }
         } else {
@@ -42,18 +44,20 @@ export default async function databaseSelectedFunctions(file: any, projectPath: 
                 case "mysql":
                     dbName = await askDBNameQuestion();
                     mySqlUsecase(
-                        filePath+"/appServerWithMySQLDBConfig.txt",
-                        file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials, projectPath, projectName);
+                        filePath + "/appServerWithMySQLDBConfig.txt",
+                        file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials, projectPath);
                     break;
                 case "mongodb":
                     dbName = await askDBNameQuestion();
                     await mongoUsecase(
                         filePath+"/appServerWithMongoDBConfig.txt",
-                        file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
+                        file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials, projectPath);
                     break;
                 case "postgresql":
                     dbName = await askDBNameQuestion();
-                    await postgresUsecase(filePath+"/appServerWithPostgresDBConfig.txt", file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials);
+                    await postgresUsecase(
+                        filePath+"/appServerWithPostgresDBConfig.txt",
+                        file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials, projectPath);
                     break;
             }
         }

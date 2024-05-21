@@ -30,7 +30,7 @@ export async function installer() {
         }
 
         try {
-            const gitSpinner = ora("Downloading files and project creation ...").start();
+            const gitSpinner = ora("Downloading files and project creation").start();
             await exec(`git clone --depth 1 ${gitRepo} ${projectPath} --quiet`);
             gitSpinner.succeed();
 
@@ -43,13 +43,17 @@ export async function installer() {
             await exec("npm uninstall ora cli-spinners util @clack/prompts path fs");
             cleanSpinner.succeed();
 
-            const npmSpinner = ora("Installing dependencies...").start();
+            const npmSpinner = ora("Installing dependencies").start();
             await exec("npm install");
             npmSpinner.succeed();
 
             await askInstallingRSAKeypairUtils();
-            await databaseSelectedFunctions(`${projectPath}/src/infrastructure/server/app.server.ts`, projectPath, projectName);
-
+            await databaseSelectedFunctions(
+                `${projectPath}/src/infrastructure/server/app.server.ts`,
+                projectPath, projectName
+            );
+            console.log(`\n${colors.cyan(`${projectName}`)} has been created successfully.`);
+            process.exit();
         } catch (err: any) {
             fs.rmSync(projectPath, { recursive: true, force: true });
             console.error(err);

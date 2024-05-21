@@ -3,24 +3,18 @@ import {updateEnvVariableUtils} from "../utils/updateEnvVariable.utils";
 import createAppServerFileFunction from "../functions/createAppServerFile.function";
 import {createMySQLDatabase} from "../core/createMySQLDatabase";
 
-export default function mySqlUsecase(fileContent: string,
-                                     file: any,
-                                     dbHost: string | undefined,
-                                     dbPort: string | undefined,
-                                     dbUser: string | undefined,
-                                     dbPwd:  string | undefined,
-                                     dbName: string,
-                                     dbCredentials: any, projectPath: any, projectName: any, ) {
+export default function mySqlUsecase(fileContent: string, file: any, dbHost: string | undefined, dbPort: string | undefined,
+                                     dbUser: string | undefined, dbPwd:  string | undefined, dbName: string, dbCredentials: any,
+                                     projectPath: any) {
+
+    const host: string | undefined = dbHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST;
+    const user: string | undefined = dbUser ?? dotenv.config()?.parsed?.DATA_BASE_USER;
+    const password: string | undefined = dbPwd ?? dotenv.config()?.parsed?.DATA_BASE_PASSWORD;
+    const port: number = parseInt(dbPort!) ?? parseInt(dotenv.config()?.parsed?.DATA_BASE_PORT!);
+    const dataBaseName: string = dbName ?? dotenv.config()?.parsed?.DATA_BASE_NAME;
+
     createAppServerFileFunction(fileContent, file);
-    createMySQLDatabase(
-        dbHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST,
-        dbUser ?? dotenv.config()?.parsed?.DATA_BASE_USER,
-        dbPwd ?? dotenv.config()?.parsed?.DATA_BASE_PASSWORD,
-        dbName ?? dotenv.config()?.parsed?.DATA_BASE_NAME,
-        parseInt(dbPort!) ?? dotenv.config()?.parsed?.DATA_BASE_PORT,
-        projectPath,
-        projectName
-    );
+    createMySQLDatabase(host, user, password, dataBaseName, port, projectPath);
     updateEnvVariableUtils(
         dbName,
         dbCredentials! && dbCredentials!.dbUser !== undefined ? dbCredentials!.dbUser! : (dotenv.config()?.parsed?.DATA_BASE_USER!),

@@ -1,7 +1,14 @@
 import clackCLI from "@clack/prompts";
 import colors from "ansi-colors";
+import gradient from "gradient-string";
 
 export default async function askProjectNameUtils(): Promise<string> {
+    console.log(gradient(`cyan`, `pink`, `orange`)(`╭──────────────────────────────────────────────╮\n` +
+                                                                  `│                                              │\n` +
+                                                                  `│             Welcome to OptiCoreJs            │\n` +
+                                                                  `│                                              │\n` +
+                                                                  `╰──────────────────────────────────────────────╯\n`));
+    console.log(`${colors.cyan(`Let's start to create a new project.\n`)}`)
     const projectName = await clackCLI.text(
         {
             message: "Enter the name of project :",
@@ -9,9 +16,9 @@ export default async function askProjectNameUtils(): Promise<string> {
             validate: (value: string): string | undefined => {
                 let pattern: RegExp = new RegExp("^[a-z_-]+$");
                 if (!value) {
-                    return "Please database name can't be empty.";
+                    return "Please the project name can't be empty.";
                 } if (!pattern.test(value)) {
-                    return "Please enter a valide database name.";
+                    return "Please enter a valide project name.";
                 }
             },
         }

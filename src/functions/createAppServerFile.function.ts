@@ -10,15 +10,10 @@ export default function createAppServerFileFunction(fileContent: any, file: any)
     }
 
     try {
-        fs.writeFile(
+        fs.writeFileSync(
             file,
             getFileContent,
             { flag: "a+" },
-            (err: any) => {
-                if (err) {
-                    console.log(`${colors.bgRed(`${colors.white(`${err.message}`)}`)}`);
-                }
-            }
         );
     } catch (err: any) {
         console.log(`${colors.bgRed(`${colors.white(`${err.message}`)}`)}`);

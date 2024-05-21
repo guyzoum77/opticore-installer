@@ -2,8 +2,11 @@ import colors from "ansi-colors";
 import dotenv from "dotenv";
 import {Db, MongoClient} from "mongodb";
 import clackCLI from "@clack/prompts";
+import fs from "fs";
 
-export async function createMongoDBDatabase(databaseHost: string | undefined, databaseUser: string | undefined, databasePassword: string | undefined, databaseName: string, databasePort: number) {
+export async function createMongoDBDatabase(databaseHost: string | undefined, databaseUser: string | undefined,
+                                            databasePassword: string | undefined, databaseName: string,
+                                            databasePort: number, projectPath: string) {
     try {
         const configMongoUrl: string = (typeof databasePort === "number") || !isNaN(databasePort) || isFinite(databasePort)
             ? `mongodb://${databaseHost}:${databasePort}/`
@@ -18,6 +21,7 @@ export async function createMongoDBDatabase(databaseHost: string | undefined, da
                 }
             }
         );
+
         await client.connect();
         const collection = await clackCLI.text(
             {
@@ -34,30 +38,41 @@ export async function createMongoDBDatabase(databaseHost: string | undefined, da
                 },
             }
         );
-
         if (clackCLI.isCancel(collection)) {
             console.log(`${colors.bgRed(`${colors.white("Operation cancelled.")}`)}`);
             process.exit(0);
         }
-
         if (collection) {
+            let prismaOrm = await import("opticore-prisma-orm-installer");
             const db: Db = client.db(databaseName);
             await db.createCollection(collection);
+            console.log(`${colors.green(
+                `Your database ${colors.bgGreen(`${colors.white(`${databaseName}`)}`)} has been created successfully.`)}`
+            );
+            await prismaOrm.initializePrismaFunction(projectPath, "mongodb");
+
         } else {
             console.info(`${colors.bgBlueBright("" +
                 "Sorry, the database couldn't be created. In MongoDB, a database is not created until it gets content! " +
                 "MongoDB waits until you have created a collection (table), with at least one document (record) before it" +
                 " actually creates the database (and collection).")}`);
+            fs.rmSync(projectPath, { recursive: true, force: true });
             process.exit(0);
         }
 
     } catch (e: any) {
         if (e.code === 18) {
-            return console.error(`${colors.red(`Authentication failed, be sure the credentials is correct!`)}`);
+            console.error(`${colors.red(`Authentication failed, be sure the credentials is correct!`)}`);
+            fs.rmSync(projectPath, { recursive: true, force: true });
+            process.exit();
         } if (e.cause.code === 'ERR_INVALID_URL') {
-            return console.error(`${colors.red(`Unable to parse ${databaseHost}:${databasePort} with URL`)}`);
+            console.error(`${colors.red(`Unable to parse ${databaseHost}:${databasePort} with URL`)}`);
+            fs.rmSync(projectPath, { recursive: true, force: true });
+            process.exit();
         } if (e.code === undefined) {
-            return console.error(`${colors.red(`MongoServerSelectionError: getaddrinfo EAI_AGAIN (${databaseHost} is not allow to database connection)`)}`);
+            console.error(`${colors.red(`MongoServerSelectionError: getaddrinfo EAI_AGAIN (${databaseHost} is not allow to database connection)`)}`);
+            fs.rmSync(projectPath, { recursive: true, force: true });
+            process.exit();
         }
     }
 }

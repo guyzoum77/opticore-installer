@@ -1,6 +1,6 @@
 {
   "name": "opticore-project-installer",
-  "version": "1.2.25",
+  "version": "1.2.26",
   "description": "install opticore project",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -30,7 +30,7 @@
     "fs": "^0.0.1-security",
     "gradient-string": "^2.0.2",
     "mongodb": "^6.6.1",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.9.7",
     "node": "^20.13.1",
     "opticore-asymmetric-rsa-keypair": "^1.0.1",
     "opticore-prisma-orm-installer": "^1.0.3",
@@ -42,7 +42,6 @@
     "util": "^0.12.5"
   },
   "devDependencies": {
-    "@types/mysql": "^2.15.26",
     "@types/node": "^20.12.11",
     "@types/pg": "^8.11.6",
     "ts-node": "^10.9.2",

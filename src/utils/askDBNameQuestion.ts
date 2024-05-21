@@ -1,7 +1,8 @@
 import clackCLI from "@clack/prompts";
 import colors from "ansi-colors";
+import fs from "fs";
 
-export async function askDBNameQuestion() {
+export async function askDBNameQuestion(projectPath: any) {
     const dbName = await clackCLI.text(
         {
             message: "Enter the name of database :",
@@ -20,6 +21,7 @@ export async function askDBNameQuestion() {
 
     if (clackCLI.isCancel(dbName)) {
         console.log(`${colors.bgRed(`${colors.white("Operation cancelled.")}`)}`);
+        fs.rmSync(projectPath, { recursive: true, force: true });
         process.exit(0);
     }
 

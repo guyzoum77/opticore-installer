@@ -1,7 +1,8 @@
 import clackCLI from "@clack/prompts";
 import colors from "ansi-colors";
+import fs from "fs";
 
-export default async function askInstallingRSAKeypairUtils() {
+export default async function askInstallingRSAKeypairUtils(projectPath: any) {
     let ora = (await import("ora")).default;
     const asymmetricRSAKeypair =  await clackCLI.select({
         message: "Do you want install asymmetric rsa keypair ?",
@@ -14,6 +15,7 @@ export default async function askInstallingRSAKeypairUtils() {
 
     if (clackCLI.isCancel(asymmetricRSAKeypair)) {
         console.log(`${colors.bgRed(`${colors.white("Operation cancelled.")}`)}`);
+        fs.rmSync(projectPath, { recursive: true, force: true });
         process.exit(0);
     }
 

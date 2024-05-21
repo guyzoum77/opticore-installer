@@ -3,7 +3,7 @@ import {updateEnvVariableUtils} from "../utils/updateEnvVariable.utils";
 import createAppServerFileFunction from "../functions/createAppServerFile.function";
 import {createMySQLDatabase} from "../core/createMySQLDatabase";
 
-export default function mySqlUsecase(fileContent: string, file: any, dbHost: string | undefined, dbPort: string | undefined,
+export default async function mySqlUsecase(fileContent: string, file: any, dbHost: string | undefined, dbPort: string | undefined,
                                      dbUser: string | undefined, dbPwd:  string | undefined, dbName: string, dbCredentials: any,
                                      projectPath: any) {
 
@@ -14,7 +14,7 @@ export default function mySqlUsecase(fileContent: string, file: any, dbHost: str
     const dataBaseName: string = dbName ?? dotenv.config()?.parsed?.DATA_BASE_NAME;
 
     createAppServerFileFunction(fileContent, file);
-    createMySQLDatabase(host, user, password, dataBaseName, port, projectPath);
+    await createMySQLDatabase(host, user, password, dataBaseName, port, projectPath);
     updateEnvVariableUtils(
         dbName,
         dbCredentials! && dbCredentials!.dbUser !== undefined ? dbCredentials!.dbUser! : (dotenv.config()?.parsed?.DATA_BASE_USER!),

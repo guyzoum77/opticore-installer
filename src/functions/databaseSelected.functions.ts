@@ -42,19 +42,19 @@ export default async function databaseSelectedFunctions(file: any, projectPath: 
         } else {
             switch (databaseSelected) {
                 case "mysql":
-                    dbName = await askDBNameQuestion();
-                    mySqlUsecase(
+                    dbName = await askDBNameQuestion(projectPath);
+                    await mySqlUsecase(
                         filePath + "/appServerWithMySQLDBConfig.txt",
                         file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials, projectPath);
                     break;
                 case "mongodb":
-                    dbName = await askDBNameQuestion();
+                    dbName = await askDBNameQuestion(projectPath);
                     await mongoUsecase(
                         filePath+"/appServerWithMongoDBConfig.txt",
                         file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials, projectPath);
                     break;
                 case "postgresql":
-                    dbName = await askDBNameQuestion();
+                    dbName = await askDBNameQuestion(projectPath);
                     await postgresUsecase(
                         filePath+"/appServerWithPostgresDBConfig.txt",
                         file, dbHost, dbPort, dbUser, dbPwd, dbName, dbCredentials, projectPath);

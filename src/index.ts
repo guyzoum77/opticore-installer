@@ -47,11 +47,8 @@ export async function installer() {
             await exec("npm install");
             npmSpinner.succeed();
 
-            await askInstallingRSAKeypairUtils();
-            await databaseSelectedFunctions(
-                `${projectPath}/src/infrastructure/server/app.server.ts`,
-                projectPath, projectName
-            );
+            await askInstallingRSAKeypairUtils(projectPath);
+            await databaseSelectedFunctions(`${projectPath}/src/infrastructure/server/app.server.ts`, projectPath, projectName);
             console.log(`\n${colors.cyan(`${projectName}`)} has been created successfully.`);
             process.exit();
         } catch (err: any) {

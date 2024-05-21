@@ -9,6 +9,8 @@ import fs, { existsSync, mkdirSync } from "fs";
 import databaseSelectedFunctions from "./functions/databaseSelected.functions";
 import askProjectNameUtils from "./utils/askProjectName.utils";
 import askInstallingRSAKeypairUtils from "./utils/askInstallingRSAKeypair.utils";
+import gradient from "gradient-string";
+import {consoleMessageInfo} from "./utils/info/consoleMessage.info";
 
 
 export async function installer() {
@@ -24,6 +26,7 @@ export async function installer() {
 
         if (fs.existsSync(projectPath)) {
             console.log(`${colors.cyan(`${colors.white(`${projectName} already exist, please give it another name.`)}`)}`);
+            fs.rmSync(projectPath, { recursive: true, force: true });
             process.exit(1);
         } else {
             fs.mkdirSync(projectPath);
@@ -48,8 +51,8 @@ export async function installer() {
             npmSpinner.succeed();
 
             await askInstallingRSAKeypairUtils(projectPath);
-            await databaseSelectedFunctions(`${projectPath}/src/infrastructure/server/app.server.ts`, projectPath, projectName);
-            console.log(`\n${colors.cyan(`${projectName}`)} has been created successfully.`);
+            await databaseSelectedFunctions(`${projectPath}/src/infrastructure/server/app.server.ts`, projectPath);
+            consoleMessageInfo(projectName);
             process.exit();
         } catch (err: any) {
             fs.rmSync(projectPath, { recursive: true, force: true });

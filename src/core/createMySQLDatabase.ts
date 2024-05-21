@@ -7,6 +7,7 @@ export async function createMySQLDatabase(databaseHost: string | undefined, data
                                     databasePassword: string | undefined, databaseName: string,
                                     databasePort: number, projectPath: any): Promise<void> {
     let connection: mySQL.Connection;
+    let ora = (await import("ora")).default;
 
     try {
         connection = await mySQL.createConnection({
@@ -20,7 +21,7 @@ export async function createMySQLDatabase(databaseHost: string | undefined, data
         await connection.query(createDatabaseQuery);
         let prismaOrm = await import("opticore-prisma-orm-installer");
         console.log(`Your database ${colors.green(`${databaseName}`)} has been created successfully.`);
-        await prismaOrm.initializePrismaFunction(projectPath, "mysql");
+        await prismaOrm.initializePrismaFunction(projectPath, "mysql", projectPath);
         await connection.end();
 
     } catch (err: any) {

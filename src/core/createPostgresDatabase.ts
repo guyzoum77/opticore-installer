@@ -18,7 +18,7 @@ export async function createPostgresDatabase(databaseHost: string | undefined, d
         await client.query(`CREATE DATABASE "${databaseName}";`);
         let prismaOrm = await import("opticore-prisma-orm-installer");
         console.log(`${colors.green(`Your database ${colors.cyan(`${databaseName}`)} has been created successfully.`)}`);
-        await prismaOrm.initializePrismaFunction(projectPath, "postgresql");
+        await prismaOrm.initializePrismaFunction(projectPath, "postgresql", projectPath);
         await client.end();
 
     } catch (err: any) {

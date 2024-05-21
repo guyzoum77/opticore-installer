@@ -5,20 +5,18 @@ import {databaseSelectedUtils} from "../utils/databaseSelected.utils";
 import mySqlUsecase from "../usecases/mySql.usecase";
 import mongoUsecase from "../usecases/mongo.usecase";
 import postgresUsecase from "../usecases/postgres.usecase";
-import colors from "ansi-colors";
 import createAppServerFileFunction from "./createAppServerFile.function";
 
-export default async function databaseSelectedFunctions(file: any, projectPath: any, projectName: any) {
-    let databaseSelected: string = await databaseSelectedUtils();
+export default async function databaseSelectedFunctions(file: any, projectPath: any) {
+    let databaseSelected: string = await databaseSelectedUtils(projectPath);
     let dbName: string;
     const filePath: string = path.join(__dirname, "../dist/utils/template");
 
     if (databaseSelected === "other_db") {
         createAppServerFileFunction(filePath+"/appServerWithoutDbConfig.txt", file);
         console.log(`databaseSelected into other_db is ${databaseSelected}`)
-
     } else  {
-        const dbCredentials = await databaseCredentialsUtils();
+        const dbCredentials = await databaseCredentialsUtils(projectPath);
         const dbHost: string | undefined = dbCredentials?.dbHost;
         const dbPort: string | undefined = dbCredentials?.dbPort;
         const dbUser: string | undefined = dbCredentials?.dbUser;

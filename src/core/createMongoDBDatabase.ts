@@ -7,6 +7,7 @@ import fs from "fs";
 export async function createMongoDBDatabase(databaseHost: string | undefined, databaseUser: string | undefined,
                                             databasePassword: string | undefined, databaseName: string,
                                             databasePort: number, projectPath: string) {
+    let ora = (await import("ora")).default;
     try {
         const configMongoUrl: string = (typeof databasePort === "number") || !isNaN(databasePort) || isFinite(databasePort)
             ? `mongodb://${databaseHost}:${databasePort}/`
@@ -40,17 +41,18 @@ export async function createMongoDBDatabase(databaseHost: string | undefined, da
         );
         if (clackCLI.isCancel(collection)) {
             console.log(`${colors.bgRed(`${colors.white("Operation cancelled.")}`)}`);
+            fs.rmSync(projectPath, { recursive: true, force: true });
             process.exit(0);
         }
         if (collection) {
-            let prismaOrm = await import("opticore-prisma-orm-installer");
+
             const db: Db = client.db(databaseName);
             await db.createCollection(collection);
-            console.log(`${colors.green(
-                `Your database ${colors.bgGreen(`${colors.white(`${databaseName}`)}`)} has been created successfully.`)}`
-            );
-            await prismaOrm.initializePrismaFunction(projectPath, "mongodb");
+            console.log(`${colors.green(`Your database ${colors.bgGreen(`${colors.white(`${databaseName}`)}`)} has been created successfully.`)}`);
 
+            // Prisma installation
+            let prismaOrm = await import("opticore-prisma-orm-installer");
+            await prismaOrm.initializePrismaFunction(projectPath, "mongodb", projectPath);
         } else {
             console.info(`${colors.bgBlueBright("" +
                 "Sorry, the database couldn't be created. In MongoDB, a database is not created until it gets content! " +

@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 export function updateEnvVariableUtils(dbName: string, dbUser: string, dbPwd: string, dbHost: string, dbPort: number) {
     const envFile: string = fs.readFileSync('.env', 'utf8');
     // Parse the contents into key-value pairs
-    const envConfig = dotenv.parse(envFile);
+    const envConfig: dotenv.DotenvParseOutput = dotenv.parse(envFile);
     // Update the value of the desired variable
     envConfig["DATA_BASE_NAME"] = dbName;
     envConfig["DATA_BASE_USER"] = dbUser;

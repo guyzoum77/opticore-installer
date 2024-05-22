@@ -6,7 +6,7 @@ import createAppServerFileFunction from "../functions/createAppServerFile.functi
 export default async function postgresUsecase(fileContent: string, file: any, dbHost: string | undefined,
                                               dbPort: string | undefined, dbUser: string | undefined,
                                               dbPwd:  string | undefined, dbName: string, dbCredentials: any,
-                                              projectPath: any) {
+                                              projectPath: any): Promise<void> {
     createAppServerFileFunction(fileContent, file);
     await createPostgresDatabase(
         dbHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST,

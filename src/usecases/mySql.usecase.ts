@@ -5,7 +5,7 @@ import {createMySQLDatabase} from "../core/createMySQLDatabase";
 
 export default async function mySqlUsecase(fileContent: string, file: any, dbHost: string | undefined, dbPort: string | undefined,
                                      dbUser: string | undefined, dbPwd:  string | undefined, dbName: string, dbCredentials: any,
-                                     projectPath: any) {
+                                     projectPath: any): Promise<void> {
 
     const host: string | undefined = dbHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST;
     const user: string | undefined = dbUser ?? dotenv.config()?.parsed?.DATA_BASE_USER;

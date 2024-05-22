@@ -6,7 +6,7 @@ import {updateEnvVariableUtils} from "../utils/updateEnvVariable.utils";
 export default async function mongoUsecase(fileContent: string, file: any, dbHost: string | undefined,
                                            dbPort: string | undefined, dbUser: string | undefined,
                                            dbPwd:  string | undefined, dbName: string, dbCredentials: any,
-                                           projectPath: string) {
+                                           projectPath: string): Promise<void> {
     createAppServerFileFunction(fileContent, file);
     await createMongoDBDatabase(
         dbHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST,

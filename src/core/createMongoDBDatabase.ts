@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import {Db, MongoClient} from "mongodb";
 import clackCLI from "@clack/prompts";
 import fs from "fs";
+import {prismaInstaller} from "./prismaInstaller";
 
 export async function createMongoDBDatabase(databaseHost: string | undefined, databaseUser: string | undefined,
                                             databasePassword: string | undefined, databaseName: string,
@@ -50,8 +51,7 @@ export async function createMongoDBDatabase(databaseHost: string | undefined, da
             console.log(`${colors.green(`Your database ${colors.bgGreen(`${colors.white(`${databaseName}`)}`)} has been created successfully.`)}`);
 
             // Prisma installation
-            let prismaOrm = await import("opticore-install-prisma");
-            await prismaOrm.initializePrismaFunction();
+            await prismaInstaller();
         } else {
             console.info(`${colors.bgBlueBright("" +
                 "Sorry, the database couldn't be created. In MongoDB, a database is not created until it gets content! " +

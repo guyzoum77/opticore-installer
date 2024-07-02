@@ -2,6 +2,7 @@ import {Client} from "pg";
 import colors from "ansi-colors";
 import dotenv from "dotenv";
 import fs from "fs";
+import {prismaInstaller} from "./prismaInstaller";
 
 
 export async function createPostgresDatabase(databaseHost: string | undefined, databaseUser: string | undefined,
@@ -16,9 +17,7 @@ export async function createPostgresDatabase(databaseHost: string | undefined, d
         });
         await client.connect();
         await client.query(`CREATE DATABASE "${databaseName}";`);
-        let prismaOrm = await import("opticore-install-prisma");
-        console.log(`${colors.green(`Your database ${colors.cyan(`${databaseName}`)} has been created successfully.`)}`);
-        await prismaOrm.initializePrismaFunction();
+        await prismaInstaller();
         await client.end();
 
     } catch (err: any) {

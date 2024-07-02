@@ -2,6 +2,7 @@ import mySQL from "mysql2/promise";
 import colors from "ansi-colors";
 import dotenv from "dotenv";
 import fs from "fs";
+import {prismaInstaller} from "./prismaInstaller";
 
 export async function createMySQLDatabase(databaseHost: string | undefined, databaseUser: string | undefined,
                                     databasePassword: string | undefined, databaseName: string,
@@ -19,9 +20,7 @@ export async function createMySQLDatabase(databaseHost: string | undefined, data
         await connection.connect();
         const createDatabaseQuery: string = `CREATE DATABASE IF NOT EXISTS ${databaseName}`;
         await connection.query(createDatabaseQuery);
-        let prismaOrm = await import("opticore-install-prisma");
-        console.log(`Your database ${colors.green(`${databaseName}`)} has been created successfully.`);
-        await prismaOrm.initializePrismaFunction();
+        await prismaInstaller();
         await connection.end();
 
     } catch (err: any) {

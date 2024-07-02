@@ -23,18 +23,19 @@ export async function installer(): Promise<void> {
     if (starterProject === "restfull_api_project") {
         projectName = await askProjectNameUtils();
         await restfullApiProjectStarterTemplate(projectName, ora, exec, rm);
-    }
-    switch (starterProject) {
-        case "restfull_api_project":
-            projectName = await askProjectNameUtils();
-            await restfullApiProjectStarterTemplate(projectName, ora, exec, rm);
-            break;
-        case "skeleton_project":
-            break;
-        case "web_project":
-            break;
-        case "complete_restfull_project":
-            break;
+    } else {
+        switch (starterProject) {
+            case "restfull_api_project":
+                projectName = await askProjectNameUtils();
+                await restfullApiProjectStarterTemplate(projectName, ora, exec, rm);
+                break;
+            case "skeleton_project":
+                break;
+            case "web_project":
+                break;
+            case "complete_restfull_project":
+                break;
+        }
     }
 }
 

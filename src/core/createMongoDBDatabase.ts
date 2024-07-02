@@ -45,14 +45,13 @@ export async function createMongoDBDatabase(databaseHost: string | undefined, da
             process.exit(0);
         }
         if (collection) {
-
             const db: Db = client.db(databaseName);
             await db.createCollection(collection);
             console.log(`${colors.green(`Your database ${colors.bgGreen(`${colors.white(`${databaseName}`)}`)} has been created successfully.`)}`);
 
             // Prisma installation
-            let prismaOrm = await import("opticore-prisma-orm-installer");
-            await prismaOrm.initializePrismaFunction(projectPath, "mongodb", projectPath);
+            let prismaOrm = await import("opticore-install-prisma");
+            await prismaOrm.initializePrismaFunction();
         } else {
             console.info(`${colors.bgBlueBright("" +
                 "Sorry, the database couldn't be created. In MongoDB, a database is not created until it gets content! " +

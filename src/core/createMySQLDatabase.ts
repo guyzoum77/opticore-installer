@@ -19,9 +19,9 @@ export async function createMySQLDatabase(databaseHost: string | undefined, data
         await connection.connect();
         const createDatabaseQuery: string = `CREATE DATABASE IF NOT EXISTS ${databaseName}`;
         await connection.query(createDatabaseQuery);
-        let prismaOrm = await import("opticore-prisma-orm-installer");
+        let prismaOrm = await import("opticore-install-prisma");
         console.log(`Your database ${colors.green(`${databaseName}`)} has been created successfully.`);
-        await prismaOrm.initializePrismaFunction(projectPath, "mysql", projectPath);
+        await prismaOrm.initializePrismaFunction();
         await connection.end();
 
     } catch (err: any) {

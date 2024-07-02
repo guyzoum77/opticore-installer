@@ -35,7 +35,7 @@
     "mysql2": "^3.10.2",
     "node": "^20.13.1",
     "opticore-asymmetric-rsa-keys": "^1.0.1",
-    "opticore-install-prisma": "^1.0.4",
+    "opticore-install-prisma": "^1.0.5",
     "ora": "^8.0.1",
     "path": "^0.12.7",
     "pg": "^8.12.0",

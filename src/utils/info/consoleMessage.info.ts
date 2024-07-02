@@ -2,6 +2,7 @@ import gradient from "gradient-string";
 import colors from "ansi-colors";
 
 export function consoleMessageInfo(projectName: any) {
+    console.log(`\n`);
     console.log(gradient(`cyan`, `pink`, `orange`)("╭────────────────────────────────────────────────────────────╮\n" +
         "│ 🎉 Your OpticoreJs project has been created successfully!  │\n" +
         "╰────────────────────────────────────────────────────────────╯"));

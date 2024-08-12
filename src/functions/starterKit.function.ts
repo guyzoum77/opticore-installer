@@ -17,6 +17,8 @@ export async function starterKitFunction(): Promise<string> {
             { label: "Web project", value: ["web_project"], hint: "Everything you'll need to build a server render web project" },
             { label: "Skeleton project", value: ["skeleton_project"], hint: "A lean OptiCoreJS application with the framework core" },
             { label: "RestFull API project", value: ["restfull_api_project"], hint: "OptiCoreJS app tailored to create a RestFull APIs" },
+            { label: "Complete restFull API project", value: ["complete_restfull_project"], hint: "OptiCoreJS app tailored to create a complete RestFull APIs" },
+            { label: "complete web project", value: ["complete_web_project"], hint: "OptiCoreJS app tailored to create a complete Web project" },
         ],
     });
     if (clackCLI.isCancel(chooseKitStarter)) {

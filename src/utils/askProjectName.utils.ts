@@ -1,7 +1,6 @@
 import clackCLI from "@clack/prompts";
 import colors from "ansi-colors";
-import gradient from "gradient-string";
-import fs from "fs";
+
 
 export default async function askProjectNameUtils(): Promise<string> {
     const projectName = await clackCLI.text(

@@ -24,6 +24,8 @@ export async function installer(): Promise<void> {
             break;
         case "complete_restfull_project":
             break;
+        case "complete_web_project":
+            break;
     }
 }
 

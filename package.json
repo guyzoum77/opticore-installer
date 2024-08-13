@@ -1,6 +1,6 @@
 {
   "name": "opticore-project-installer",
-  "version": "1.2.44",
+  "version": "1.2.45",
   "description": "install opticore project",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

@@ -2,10 +2,11 @@ import dotenv from "dotenv";
 import {updateEnvVariableUtils} from "../utils/updateEnvVariable.utils";
 import createAppServerFileFunction from "../functions/createAppServerFile.function";
 import {createMySQLDatabase} from "../core/createMySQLDatabase";
+import {getTemplateFromGit} from "../core/getTemplateFromGit";
 
-export default async function mySqlUsecase(fileContent: string, file: any, dbHost: string | undefined, dbPort: string | undefined,
+export default async function mySqlUsecase(dbHost: string | undefined, dbPort: string | undefined,
                                      dbUser: string | undefined, dbPwd:  string | undefined, dbName: string, dbCredentials: any,
-                                     projectPath: any): Promise<void> {
+                                     projectPath: any, currentPath: any): Promise<void> {
 
     const host: string | undefined = dbHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST;
     const user: string | undefined = dbUser ?? dotenv.config()?.parsed?.DATA_BASE_USER;
@@ -13,7 +14,7 @@ export default async function mySqlUsecase(fileContent: string, file: any, dbHos
     const port: number = parseInt(dbPort!) ?? parseInt(dotenv.config()?.parsed?.DATA_BASE_PORT!);
     const dataBaseName: string = dbName ?? dotenv.config()?.parsed?.DATA_BASE_NAME;
 
-    createAppServerFileFunction(fileContent, file);
+    await getTemplateFromGit("https://github.com/guyzoum77/opticore-api-restfull-template-mysql.git", projectPath, currentPath);
     await createMySQLDatabase(host, user, password, dataBaseName, port, projectPath);
     updateEnvVariableUtils(
         dbName,

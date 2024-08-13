@@ -1,13 +1,12 @@
 import dotenv from "dotenv";
-import createAppServerFileFunction from "../functions/createAppServerFile.function";
 import {createMongoDBDatabase} from "../core/createMongoDBDatabase";
 import {updateEnvVariableUtils} from "../utils/updateEnvVariable.utils";
+import {getTemplateFromGit} from "../core/getTemplateFromGit";
 
-export default async function mongoUsecase(fileContent: string, file: any, dbHost: string | undefined,
-                                           dbPort: string | undefined, dbUser: string | undefined,
-                                           dbPwd:  string | undefined, dbName: string, dbCredentials: any,
-                                           projectPath: string): Promise<void> {
-    createAppServerFileFunction(fileContent, file);
+export default async function mongoUsecase(dbHost: string | undefined, dbPort: string | undefined, dbUser: string | undefined,
+                                           dbPwd:  string | undefined, dbName: string, dbCredentials: any, projectPath: string,
+                                           currentPath: any): Promise<void> {
+    await getTemplateFromGit("https://github.com/guyzoum77/opticore-api-restfull-template-mongodb.git", projectPath, currentPath);
     await createMongoDBDatabase(
         dbHost ?? dotenv.config()?.parsed?.DATA_BASE_HOST,
         dbUser ?? dotenv.config()?.parsed?.DATA_BASE_USER,

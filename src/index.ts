@@ -16,7 +16,7 @@ export async function installer(): Promise<void> {
     switch (starterProject) {
         case "restfull_api_project":
             projectName = await askProjectNameUtils();
-            await restfullApiProjectStarterTemplate(projectName, ora, exec, rm);
+            await restfullApiProjectStarterTemplate(projectName);
             break;
         case "skeleton_project":
             break;

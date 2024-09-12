@@ -3,7 +3,7 @@ import colors from "ansi-colors";
 
 
 export default async function askProjectNameUtils(): Promise<string> {
-    const projectName = await clackCLI.text(
+    const projectName: string | symbol = await clackCLI.text(
         {
             message: "Enter the name of project :",
             placeholder: "opticore",

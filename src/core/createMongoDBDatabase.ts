@@ -51,7 +51,7 @@ export async function createMongoDBDatabase(databaseHost: string | undefined, da
             console.log(`${colors.green(`Your database ${colors.bgGreen(`${colors.white(`${databaseName}`)}`)} has been created successfully.`)}`);
 
             // Prisma installation
-            await prismaInstaller();
+            await prismaInstaller("mongodb");
         } else {
             console.info(`${colors.bgBlueBright("" +
                 "Sorry, the database couldn't be created. In MongoDB, a database is not created until it gets content! " +

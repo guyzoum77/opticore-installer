@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import {updateEnvVariableUtils} from "../utils/updateEnvVariable.utils";
-import createAppServerFileFunction from "../functions/createAppServerFile.function";
 import {createMySQLDatabase} from "../core/createMySQLDatabase";
 import {getTemplateFromGit} from "../core/getTemplateFromGit";
 

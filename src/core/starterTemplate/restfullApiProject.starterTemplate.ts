@@ -35,7 +35,7 @@ export async function restfullApiProjectStarterTemplate(projectName: any) {
 
         const escapedProjectPath: string = shellEscape(normalizedPath);
         const escapedCurrentPath: string = shellEscape(normalizedCurrentPath);
-        await databaseSelectedFunctions(projectName, escapedProjectPath, escapedCurrentPath);
+        await databaseSelectedFunctions(escapedProjectPath, escapedCurrentPath);
 
         try {
             await askInstallingRSAKeypairUtils(projectPath);

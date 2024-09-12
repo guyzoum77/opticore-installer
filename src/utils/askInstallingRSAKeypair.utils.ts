@@ -8,7 +8,7 @@ import {createFileFunction} from "../functions/createFile.function";
 
 export default async function askInstallingRSAKeypairUtils(projectPath: any) {
     let ora = (await import("ora")).default;
-    const asymmetricRSAKeypair =  await clackCLI.select({
+    const asymmetricRSAKeypair: symbol | string[] =  await clackCLI.select({
         message: "Do you want install asymmetric rsa keypair ?",
         initialValue: ["rsa_keypair"],
         options: [
@@ -25,15 +25,14 @@ export default async function askInstallingRSAKeypairUtils(projectPath: any) {
 
     if (asymmetricRSAKeypair[0] === "rsa_keypair") {
         let keyPairDir: string = process.cwd() + "/src/core/constants/keypair";
-        let keyPair: KeyPairSyncResult<string, string> = crypto.generateKeyPairSync(
-            "rsa",
-            rsaKeyPairOptionsFunction()
-        );
+        let keyPair: KeyPairSyncResult<string, string> = crypto.generateKeyPairSync("rsa", rsaKeyPairOptionsFunction());
         const rsaSpinner = ora("Installing asymmetric RSA Keypair\n").start();
+
         if (fs.existsSync(path.join(keyPairDir, 'id_rsa_pub.pem')) && fs.existsSync(path.join(keyPairDir, 'id_rsa_priv.pem'))) {
             console.log(`${colors.bgCyan(`${colors.white(`RSA Keypair is already exist.`)}`)}`);
             process.exit();
         }
+
         if (fs.existsSync(keyPair.privateKey) && fs.existsSync(keyPair.publicKey)) {
             console.log(`${colors.bgCyan(`${colors.white(`RSA Keypair is already exist.`)}`)}`);
             process.exit();
@@ -55,6 +54,8 @@ export default async function askInstallingRSAKeypairUtils(projectPath: any) {
                 filePath + "/publicKeypairContent.txt"
             );
 
+            rsaSpinner.succeed();
+
             console.log(`${colors.bgGreen(`${colors.white(`The RSA Keypair is been created successfully.`)}`)}`);
             console.log(`${colors.cyan(`created`)} : ${colors.green(`src/core/constants/keypair/public.key.ts`)}`);
             console.log(`${colors.cyan(`created`)} : ${colors.green(`src/core/constants/keypair/private.key.ts`)}`);
@@ -62,7 +63,7 @@ export default async function askInstallingRSAKeypairUtils(projectPath: any) {
             console.log(`${colors.cyan(`created`)} : ${colors.green(`src/core/constants/keypair/id_rsa_pub.pem`)}`);
             console.log(`${colors.cyan(`created`)} : ${colors.green(`src/core/constants/keys/id_rsa_priv.pem`)}`);
         }
-        rsaSpinner.succeed();
+
     }  else  {
         console.log(`${colors.bgCyan(`${colors.white("RSA KeyPair has not been installed.")}`)}`);
     }

@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import {updateEnvVariableUtils} from "../utils/updateEnvVariable.utils";
 import {createPostgresDatabase} from "../core/createPostgresDatabase";
-import createAppServerFileFunction from "../functions/createAppServerFile.function";
 import {getTemplateFromGit} from "../core/getTemplateFromGit";
 
 export default async function postgresUsecase(dbHost: string | undefined,

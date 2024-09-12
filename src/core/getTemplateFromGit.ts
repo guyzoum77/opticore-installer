@@ -2,7 +2,6 @@ import path from "path";
 import fs from "fs";
 import {promisify} from "util";
 import cp from "child_process";
-import {shellEscape} from "./shellEscape";
 
 export async function getTemplateFromGit(gitRepo: any, projectPath: any, currentPath: any) {
     let ora = (await import("ora")).default;
@@ -22,7 +21,6 @@ export async function getTemplateFromGit(gitRepo: any, projectPath: any, current
         await Promise.all([rmGit, rmBin]);
 
         const escapedPath = projectPath.replace(/^"(.*)"$/, '$1');
-        console.log(`Changing directory to: ${escapedPath}`);
         process.chdir(escapedPath);
         await exec("npm uninstall ora cli-spinners util @clack/prompts path fs");
         cleanSpinner.succeed();

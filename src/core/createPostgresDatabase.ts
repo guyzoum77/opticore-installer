@@ -17,7 +17,7 @@ export async function createPostgresDatabase(databaseHost: string | undefined, d
         });
         await client.connect();
         await client.query(`CREATE DATABASE "${databaseName}";`);
-        await prismaInstaller();
+        await prismaInstaller("postgresql");
         await client.end();
 
     } catch (err: any) {

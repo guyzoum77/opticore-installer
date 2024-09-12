@@ -20,7 +20,7 @@ export async function createMySQLDatabase(databaseHost: string | undefined, data
         await connection.connect();
         const createDatabaseQuery: string = `CREATE DATABASE IF NOT EXISTS ${databaseName}`;
         await connection.query(createDatabaseQuery);
-        await prismaInstaller();
+        await prismaInstaller("mysql");
         await connection.end();
 
     } catch (err: any) {

@@ -9,7 +9,7 @@ import {createFileFunction} from "./createFile.function";
 
 export async function rsaKeysInstallerFunction() {
     try {
-        let keyPairDir: string = process.cwd() + "/src/core/constants/keypair";
+        let keyPairDir: string = process.cwd() + "/src/utils/constants/keypair";
         let keyPair: KeyPairSyncResult<string, string> = crypto.generateKeyPairSync(
             "rsa",
             rsaKeyPairOptionsFunction()
@@ -29,7 +29,7 @@ export async function rsaKeysInstallerFunction() {
                 fs.writeFileSync(path.join(keyPairDir, 'id_rsa_pub.pem'), keyPair.publicKey);
                 fs.writeFileSync(path.join(keyPairDir, 'id_rsa_priv.pem'), keyPair.privateKey);
 
-                const keysPath: string = process.cwd() + "/src/core/constants/keys";
+                const keysPath: string = process.cwd() + "/src/utils/constants/keys";
                 fs.mkdirSync(keysPath, {recursive: true});
 
                 let filePath: string = path.join(__dirname, "../dist/utils/template");

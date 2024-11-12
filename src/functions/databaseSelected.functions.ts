@@ -33,8 +33,8 @@ export async function databaseSelectedFunctions(projectPath: any, currentPath: a
         }
 
         return databaseSelected;
-    }
-    else {
+
+    } else {
         switch (databaseSelected) {
             case "mysql":
                 dbName = await askDBNameQuestion(projectPath);

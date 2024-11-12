@@ -24,7 +24,7 @@ export default async function askInstallingRSAKeypairUtils(projectPath: any) {
     }
 
     if (asymmetricRSAKeypair[0] === "rsa_keypair") {
-        let keyPairDir: string = process.cwd() + "/src/core/constants/keypair";
+        let keyPairDir: string = process.cwd() + "/src/utils/constants/keypair";
         let keyPair: KeyPairSyncResult<string, string> = crypto.generateKeyPairSync("rsa", rsaKeyPairOptionsFunction());
         const rsaSpinner = ora("Installing asymmetric RSA Keypair\n").start();
 
@@ -41,7 +41,7 @@ export default async function askInstallingRSAKeypairUtils(projectPath: any) {
             fs.writeFileSync(path.join(keyPairDir, 'id_rsa_pub.pem'), keyPair.publicKey);
             fs.writeFileSync(path.join(keyPairDir, 'id_rsa_priv.pem'), keyPair.privateKey);
 
-            const keysPath: string = process.cwd() + "/src/core/constants/keys";
+            const keysPath: string = process.cwd() + "/src/utils/constants/keys";
             fs.mkdirSync(keysPath, {recursive: true});
 
             let filePath: string = path.join(__dirname, "../dist/utils/template");
@@ -57,11 +57,11 @@ export default async function askInstallingRSAKeypairUtils(projectPath: any) {
             rsaSpinner.succeed();
 
             console.log(`${colors.bgGreen(`${colors.white(`The RSA Keypair is been created successfully.`)}`)}`);
-            console.log(`${colors.cyan(`created`)} : ${colors.green(`src/core/constants/keypair/public.key.ts`)}`);
-            console.log(`${colors.cyan(`created`)} : ${colors.green(`src/core/constants/keypair/private.key.ts`)}`);
+            console.log(`${colors.cyan(`created`)} : ${colors.green(`src/utils/constants/keypair/public.key.ts`)}`);
+            console.log(`${colors.cyan(`created`)} : ${colors.green(`src/utils/constants/keypair/private.key.ts`)}`);
 
-            console.log(`${colors.cyan(`created`)} : ${colors.green(`src/core/constants/keypair/id_rsa_pub.pem`)}`);
-            console.log(`${colors.cyan(`created`)} : ${colors.green(`src/core/constants/keys/id_rsa_priv.pem`)}`);
+            console.log(`${colors.cyan(`created`)} : ${colors.green(`src/utils/constants/keypair/id_rsa_pub.pem`)}`);
+            console.log(`${colors.cyan(`created`)} : ${colors.green(`src/utils/constants/keys/id_rsa_priv.pem`)}`);
         }
 
     }  else  {

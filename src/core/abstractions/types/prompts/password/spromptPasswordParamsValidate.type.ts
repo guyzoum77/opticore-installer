@@ -1,0 +1,1 @@
+export type TSPromptPasswordParamsValidate = (value: string) => string | Error | undefined;

@@ -1,0 +1,1 @@
+export type TULogInfo = (logMessage: string) => void;

@@ -1,0 +1,1 @@
+export const CConnectionProperties = "connection_limit=5&socket_timeout=3";

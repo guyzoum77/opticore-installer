@@ -1,0 +1,1 @@
+export type TConfigMongoUrlConfig = (databaseHost: string | undefined, databasePort: number) => string;

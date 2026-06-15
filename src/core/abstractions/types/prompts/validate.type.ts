@@ -1,0 +1,1 @@
+export type TValidate = (value: string) => string | Error | undefined;

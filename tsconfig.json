@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "module": "ESNext",
+    "pretty": true,
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "types": ["reflect-metadata", "node"],
+    "experimentalDecorators": true,
+    "outDir": "./dist",
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "baseUrl": "src",
+    "paths": {
+      "@opticore-installer/*": ["*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

@@ -35,8 +35,8 @@ export const MSelectDB = async(projectPath: string, currentPath: string, project
             { label: label.mysql, value: [value.mysql] },
             { label: label.mongodb, value: [value.mongodb] },
             { label: label.postgresql, value: [value.postgresql] },
-            { label: label.oracle, value: [value.oracle] },
-            { label: label.otherDb, value: [value.otherDb] },
+            // { label: label.oracle, value: [value.oracle] }, // no template repo yet, disabled
+            // { label: label.otherDb, value: [value.otherDb] }, // no template repo yet, disabled
         ],
     });
 

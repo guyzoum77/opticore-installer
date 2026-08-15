@@ -32,7 +32,7 @@ export const installerCore: (initialProjectName?: string) => Promise<void> = asy
             switch (value) {
                 case CGeneralMsg.starterInitValue:
                     const providedNameIsValid: boolean = !!initialProjectName
-                        && !SValidate(initialProjectName, CGeneralMsg.projectNameInvalidValue, CGeneralMsg.projectNameBadPattern, "^[a-zA-Z0-9]+$");
+                        && !SValidate(initialProjectName, CGeneralMsg.projectNameInvalidValue, CGeneralMsg.projectNameBadPattern, "^[a-zA-Z0-9][a-zA-Z0-9_-]*$");
 
                     projectName = providedNameIsValid
                         ? initialProjectName as string
@@ -41,7 +41,7 @@ export const installerCore: (initialProjectName?: string) => Promise<void> = asy
                             CGeneralMsg.projectNamePlaceholder,
                             CGeneralMsg.projectNameInvalidValue,
                             CGeneralMsg.projectNameBadPattern,
-                            "^[a-zA-Z0-9]+$"
+                            "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
                         );
                     if (typeof projectName === "string") {
                         const tpl: TTemplateStarter = await templateStarter(projectName);

@@ -14,9 +14,10 @@ import * as process from "node:process";
 import { MSelectDB } from "@opticore-installer/presentations/middlewares/selectDB.middleware";
 import { SShellEscape } from "@opticore-installer/domains/services/shellEscape.service";
 import { TTemplateStarter } from "@opticore-installer/core/abstractions/types/others/templateStarter.type";
+import { SValidate } from "@opticore-installer/domains/services/validate.service";
 
 
-export const installerCore: () => Promise<void> = async(): Promise<void> => {
+export const installerCore: (initialProjectName?: string) => Promise<void> = async(initialProjectName?: string): Promise<void> => {
     let projectName: string | ((arg: IPromptTextServiceParams) => never);
     UWelcomeMessage();
     intro(chalk.bgYellow.black('  Opticore Framework Installer  '));
@@ -30,13 +31,18 @@ export const installerCore: () => Promise<void> = async(): Promise<void> => {
         : (starter as string[]).map(async (value: string): Promise<void> => {
             switch (value) {
                 case CGeneralMsg.starterInitValue:
-                    projectName = await SOutputPromptText(
-                        CGeneralMsg.projectNameMessage,
-                        CGeneralMsg.projectNamePlaceholder,
-                        CGeneralMsg.projectNameInvalidValue,
-                        CGeneralMsg.projectNameBadPattern,
-                        "^[a-zA-Z0-9]+$"
-                    );
+                    const providedNameIsValid: boolean = !!initialProjectName
+                        && !SValidate(initialProjectName, CGeneralMsg.projectNameInvalidValue, CGeneralMsg.projectNameBadPattern, "^[a-zA-Z0-9]+$");
+
+                    projectName = providedNameIsValid
+                        ? initialProjectName as string
+                        : await SOutputPromptText(
+                            CGeneralMsg.projectNameMessage,
+                            CGeneralMsg.projectNamePlaceholder,
+                            CGeneralMsg.projectNameInvalidValue,
+                            CGeneralMsg.projectNameBadPattern,
+                            "^[a-zA-Z0-9]+$"
+                        );
                     if (typeof projectName === "string") {
                         const tpl: TTemplateStarter = await templateStarter(projectName);
                         const escapedProjectPath: string = SShellEscape(tpl.normalizedPath);

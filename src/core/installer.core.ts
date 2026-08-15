@@ -5,7 +5,6 @@ import {
     IPromptTextServiceParams
 } from "@opticore-installer/core/abstractions/interfaces/prompts/promptTextServiceParams.interface";
 import { UWelcomeMessage } from "@opticore-installer/utils/console/welcomeMessage.util";
-import { TUOperationCancelled } from "@opticore-installer/core/abstractions/types/prompts/uoperationCancelled.type";
 import { SOutputPromptSelect } from "@opticore-installer/domains/services/prompts/select/outputPromptSelect.service";
 import { StarterOptions } from "@opticore-installer/presentations/starter/starterOptions.starter";
 import { CGeneralMsg } from "@opticore-installer/core/abstractions/enums/constants/generalMsg.constant";

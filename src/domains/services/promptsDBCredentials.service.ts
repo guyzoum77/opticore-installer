@@ -3,12 +3,9 @@ import { cancel } from "@clack/prompts";
 import colors from "ansi-colors";
 import { SOutputPromptText } from "@opticore-installer/domains/services/prompts/text/outputPromptText.service";
 import { CDbNameLabel as label } from "@opticore-installer/core/abstractions/enums/constants/dbNameLabel.constant";
-import {
-    SOutputPromptPassword
-} from "@opticore-installer/domains/services/prompts/password/outputPromptPassword.service";
-import {
-    IPromptTextServiceParams
-} from "@opticore-installer/core/abstractions/interfaces/prompts/promptTextServiceParams.interface";
+import { SOutputPromptPassword } from "@opticore-installer/domains/services/prompts/password/outputPromptPassword.service";
+import { IPromptTextServiceParams } from "@opticore-installer/core/abstractions/interfaces/prompts/promptTextServiceParams.interface";
+
 
 
 /**

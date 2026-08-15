@@ -1,5 +1,7 @@
 import { cancel } from "@clack/prompts";
 import colors from "ansi-colors";
+import process from "node:process";
+
 import { SOutputPromptSelect } from "@opticore-installer/domains/services/prompts/select/outputPromptSelect.service";
 import { CSelectDBMessage } from "@opticore-installer/core/abstractions/enums/constants/selectDBMessage.constant";
 import { CDbNameLabel as label } from "@opticore-installer/core/abstractions/enums/constants/dbNameLabel.constant";
@@ -7,21 +9,14 @@ import { CDbNameValue as value } from "@opticore-installer/core/abstractions/enu
 import { SFetchCredentials } from "@opticore-installer/domains/services/fetchCredentials.service";
 import { SProjectCreation } from "@opticore-installer/presentations/starter/projectCreation.starter";
 import { CProjectTemplatePath as tmpl } from "@opticore-installer/core/abstractions/enums/constants/projectTemplatePath.constant";
-import {
-    ISFetchCredentials
-} from "@opticore-installer/core/abstractions/interfaces/dbCredentials/sfetchCredentials.interface";
-import process from "node:process";
-import {
-    MTemplateProject
-} from "@opticore-installer/presentations/middlewares/templateProject/templateProject.middleware";
+import { ISFetchCredentials } from "@opticore-installer/core/abstractions/interfaces/dbCredentials/sfetchCredentials.interface";
+import { MTemplateProject } from "@opticore-installer/presentations/middlewares/templateProject/templateProject.middleware";
 import { createMongoDatabase } from "@opticore-installer/presentations/middlewares/database/createMongo.database";
 import { createPostgresDatabase } from "@opticore-installer/presentations/middlewares/database/createPostgres.database";
 import { createMySQLDatabase } from "@opticore-installer/presentations/middlewares/database/createMySQL.database";
 import { IEnvVariable } from "@opticore-installer/core/abstractions/interfaces/environment/envVariable.interface";
 import { IDBParams } from "@opticore-installer/core/abstractions/interfaces/params/dbParams.interface";
-import {
-    CConnectionProperties
-} from "@opticore-installer/core/abstractions/enums/constants/connectionProperties.constant";
+import { CConnectionProperties } from "@opticore-installer/core/abstractions/enums/constants/connectionProperties.constant";
 
 
 
@@ -77,20 +72,61 @@ export const MSelectDB = async(projectPath: string, currentPath: string, project
         } else {
             (dbSelect as string[]).map(async (item: string): Promise<void> => {
                 switch (item) {
-                    case value.mysql: //@ts-ignore
-                        await MTemplateProject(tmpl.mysql, projectPath, currentPath, async (): Promise<void> => await createMySQLDatabase((params as ISFetchCredentials).dbParams), ((params as ISFetchCredentials).envParams as IEnvVariable), projectName, CConnectionProperties);
+                    case value.mysql:
+                        await MTemplateProject(
+                            tmpl.mysql,
+                            projectPath,
+                            currentPath,
+                            async (): Promise<void> => await createMySQLDatabase(
+                                //@ts-ignore
+                                (params as ISFetchCredentials).dbParams
+                            ),
+                            ((params as ISFetchCredentials).envParams as IEnvVariable),
+                            projectName,
+                            CConnectionProperties
+                        );
                         break;
-                    case value.postgresql: //@ts-ignore
-                        await MTemplateProject(tmpl.postgresql, projectPath, currentPath, async (): Promise<void> => await createPostgresDatabase((params as ISFetchCredentials).dbParams), ((params as ISFetchCredentials).envParams as IEnvVariable), projectName);
+                    case value.postgresql:
+                        await MTemplateProject(
+                            tmpl.postgresql,
+                            projectPath,
+                            currentPath,
+                            async (): Promise<void> => await createPostgresDatabase(
+                                //@ts-ignore
+                                (params as ISFetchCredentials).dbParams
+                            ),
+                            (params as ISFetchCredentials).envParams as IEnvVariable,
+                            projectName
+                        );
                         break;
                     case value.mongodb: 
-                        await MTemplateProject(tmpl.mongodb, projectPath, currentPath, async (): Promise<void> => await createMongoDatabase((params as unknown as IDBParams)), ((params as ISFetchCredentials).envParams as IEnvVariable), projectName)
+                        await MTemplateProject(
+                            tmpl.mongodb,
+                            projectPath,
+                            currentPath,
+                            async (): Promise<void> => await createMongoDatabase((params as unknown as IDBParams)),
+                            (params as ISFetchCredentials).envParams as IEnvVariable,
+                            projectName
+                        );
                         break;
                     case value.oracle:
-                        await MTemplateProject(tmpl.oracle, projectPath, currentPath, async (): Promise<void> => {}, ((params as ISFetchCredentials).envParams as IEnvVariable), projectName)
+                        await MTemplateProject(
+                            tmpl.oracle,
+                            projectPath,
+                            currentPath,
+                            async (): Promise<void> => {}, ((params as ISFetchCredentials).envParams as IEnvVariable),
+                            projectName
+                        );
                         break;
                     case value.otherDb:
-                        await MTemplateProject(tmpl.otherdb, projectPath, currentPath, async (): Promise<void> => {}, ((params as ISFetchCredentials).envParams as IEnvVariable), projectName)
+                        await MTemplateProject(
+                            tmpl.otherdb,
+                            projectPath,
+                            currentPath,
+                            async (): Promise<void> => {},
+                            ((params as ISFetchCredentials).envParams as IEnvVariable),
+                            projectName
+                        );
                         break;
                 }
             });

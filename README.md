@@ -3,11 +3,10 @@ OptiCoreJs Installer
 
 This is the official installer to start new projects based on the OptiCoreJs full-stack framework.
 
-### Creating Symfony 4 projects
+### Creating Opticore V1 projects
 
-**This installer is not compatible with Symfony 4** and newer versions. Instead,
-use [Composer](https://getcomposer.org/) and create your Symfony 4 project as follows:
+**This installer is OptiCoreJS's runner** and newer versions. Create your OptiCoreJS project as follows:
 
 ```bash
-$ npm exec create-new-project
+npm exec create-new-project
 ```

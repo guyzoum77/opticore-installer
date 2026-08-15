@@ -1,22 +1,28 @@
-import process from "node:process";
-import { cancel } from "@clack/prompts";
 import colors from "ansi-colors";
+import process from "node:process";
+
+import { cancel } from "@clack/prompts";
 import { CDbNameLabel as label } from "@opticore-installer/core/abstractions/enums/constants/dbNameLabel.constant";
 import { CDbNameValue as value } from "@opticore-installer/core/abstractions/enums/constants/dbNameValue.constant";
-import { TUOperationCancelled } from "@opticore-installer/core/abstractions/types/prompts/uoperationCancelled.type";
 import { SOutputPromptSelect } from "@opticore-installer/domains/services/prompts/select/outputPromptSelect.service";
 import { CSelectDBMessage } from "@opticore-installer/core/abstractions/enums/constants/selectDBMessage.constant";
 import { SPromptsDBCredentials } from "@opticore-installer/domains/services/promptsDBCredentials.service";
-import {
-    IPromptTextServiceParams
-} from "@opticore-installer/core/abstractions/interfaces/prompts/promptTextServiceParams.interface";
+import { IPromptTextServiceParams } from "@opticore-installer/core/abstractions/interfaces/prompts/promptTextServiceParams.interface";
 import { IMdbCredentials } from "@opticore-installer/core/abstractions/interfaces/dbCredentials/mdbCredentials.interface";
-import { SProjectCreation } from "@opticore-installer/presentations/starter/projectCreation.starter";
-import { CProjectTemplatePath as tmpl } from "@opticore-installer/core/abstractions/enums/constants/projectTemplatePath.constant";
 
 
-export const MDbCredentials: (projectPath: string, currentPath?: string, projectName?: string) => Promise<IMdbCredentials | void> = async(projectPath: string, currentPath?: string, projectName?: string): Promise<IMdbCredentials | void> => {
-    const outputDBCredentials: string[] | ((arg: IPromptTextServiceParams["projectPath"]) => never) = await SOutputPromptSelect({
+
+export const MDbCredentials: (
+    projectPath: string,
+    currentPath?: string,
+    projectName?: string
+) => Promise<IMdbCredentials | string | void> = async(
+    projectPath: string,
+    currentPath?: string,
+    projectName?: string
+): Promise<IMdbCredentials | string | void> => {
+    const outputDBCredentials: string[] |
+        ((arg: IPromptTextServiceParams["projectPath"]) => never) = await SOutputPromptSelect({
         message: CSelectDBMessage.dbCredentials,
         initialValue: [label.createDbCredentials],
         options: [
@@ -40,8 +46,7 @@ export const MDbCredentials: (projectPath: string, currentPath?: string, project
             credentials = outputDBCredential;
         });
         if (credentials === value.noDbCredentials) {
-             await SProjectCreation(tmpl.nodbcredentials, projectPath, currentPath!, projectName!);
-             process.exit();
+            return value.noDbCredentials;
         } else {
             const dbCredentials = new SPromptsDBCredentials(projectPath);
             databaseUser = await dbCredentials.promptTextDatabaseUser();

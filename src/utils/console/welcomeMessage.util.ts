@@ -18,5 +18,5 @@ export const UWelcomeMessage: () => void = (): void => {
 
     console.log(`          ${orange('OPTICORE  F R A M E W O R K   I N S T A L L E R')}`);
     console.log(`                ${dim('Create · Configure · Deploy')}\n`);
-    console.log(`   ${chalk.bold.dim('Documentation')}  ${chalk.underline.cyan('https://github.com/opticore/framework-installer')}\n`);
+    console.log(`   ${chalk.bold.dim('Documentation')}  ${chalk.underline.cyan('https://github.com/guyzoum77/opticore-installer')}\n`);
 }

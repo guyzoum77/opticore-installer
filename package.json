@@ -1,6 +1,6 @@
 {
     "name": "opticore-installer",
-    "version": "1.2.51",
+    "version": "1.2.52",
     "description": "opticore framework installer",
     "main": "dist/index.js",
     "module": "dist/index.js",

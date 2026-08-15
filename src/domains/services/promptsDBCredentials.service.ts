@@ -24,7 +24,7 @@ export class SPromptsDBCredentials {
             label.placeholderDBUser,
             label.dbUserInvalidValue,
             label.dbUserBadPattern,
-            "^[a-zA-Z0-9]+$",
+            "^.+$",
             this.projectPath
         );
 
@@ -91,7 +91,7 @@ export class SPromptsDBCredentials {
             label.placeholderDBName,
             label.dbNameInvalidValue,
             label.dbNameBadPattern,
-            "^[a-zA-Z0-9]+$",
+            "^.+$",
             this.projectPath
         );
 

@@ -1,6 +1,6 @@
 {
     "name": "opticore-installer",
-    "version": "1.2.54",
+    "version": "1.2.55",
     "description": "opticore framework installer",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -35,7 +35,7 @@
         "dotenv": "^17.4.2",
         "mongodb": "^7.3.0",
         "mysql2": "^3.22.5",
-        "opticore-feature-component": "^1.0.4",
+        "opticore-feature-component": "^1.0.5",
         "ora": "^9.4.0",
         "pg": "^8.22.0",
         "postgres": "^3.4.9",

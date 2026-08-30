@@ -11,10 +11,12 @@ import { IEnvVariable } from "@opticore-installer/core/abstractions/interfaces/e
 export class SUpdateEnv {
     private readonly arg?: IEnvVariable;
     private readonly argumentConnection?: string | null;
+    private readonly dbUrlScheme?: string;
 
-    constructor(arg?: IEnvVariable, argumentConnection?: string | null) {
+    constructor(arg?: IEnvVariable, argumentConnection?: string | null, dbUrlScheme?: string) {
         this.arg = arg;
         this.argumentConnection = argumentConnection;
+        this.dbUrlScheme = dbUrlScheme;
         this.__init();
     }
 
@@ -30,6 +32,9 @@ export class SUpdateEnv {
 
         // 2. Update ARG CONNEXION section
         this.updateArgConnexionSection(envFileLines, this.argumentConnection);
+
+        // 3. Derive DATABASE_URL from the same DATA_BASE_* values, if the key exists
+        this.updateDatabaseUrlSection(envFileLines, this.arg!, this.dbUrlScheme);
 
         fs.writeFileSync("config/env/.env", envFileLines.join("\n"));
     }
@@ -97,5 +102,37 @@ export class SUpdateEnv {
             const insertPosition: number = headerIndex !== -1 ? headerIndex + 1 : envFileLines.length;
             envFileLines.splice(insertPosition, 0, `${targetKey}=${argumentConnection}`);
         }
+    }
+
+    /**
+     * Derives DATABASE_URL from the DATA_BASE_* values so both stay consistent.
+     * Only touches the file when the DATABASE_URL key already exists there and a scheme
+     * (e.g. "postgres", "mysql", "mongodb") is known for the chosen database.
+     *
+     * @param envFileLines
+     * @param arg
+     * @param dbUrlScheme
+     * @protected
+     */
+    protected updateDatabaseUrlSection(envFileLines: string[], arg: IEnvVariable, dbUrlScheme?: string): void {
+        if (!dbUrlScheme || !arg?.dbName) {
+            return;
+        }
+
+        const targetKey = "DATABASE_URL";
+        const index: number = envFileLines.findIndex((line: string): boolean => {
+            const trimmed: string = line.trim();
+            return !trimmed.startsWith("#") && trimmed.split("=")[0] === targetKey;
+        });
+
+        if (index === -1) {
+            return;
+        }
+
+        const user: string = encodeURIComponent(arg.dbUser ?? "");
+        const pwd: string = encodeURIComponent(arg.dbPwd ?? "");
+        const databaseUrl: string = `${dbUrlScheme}://${user}:${pwd}@${arg.dbHost ?? ""}:${arg.dbPort ?? ""}/${arg.dbName}`;
+
+        envFileLines[index] = `${targetKey}=${databaseUrl}`;
     }
 }

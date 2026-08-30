@@ -9,9 +9,10 @@ export const MTemplateProject = async(
     callback: (arg: string[]) => Promise<void>,
     arg: IEnvVariable,
     projectName: string,
-    argumentConnection?: string
+    argumentConnection?: string,
+    dbUrlScheme?: string
 ): Promise<void> => {
     await SProjectCreation(repoGit, projectPath, currentPath, projectName);
-    new SUpdateEnv(arg, argumentConnection);
+    new SUpdateEnv(arg, argumentConnection, dbUrlScheme);
     await callback([]);
 }

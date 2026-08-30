@@ -84,7 +84,8 @@ export const MSelectDB = async(projectPath: string, currentPath: string, project
                             async (): Promise<void> => await createMySQLDatabase(mysqlParams),
                             envParams,
                             projectName,
-                            CConnectionProperties
+                            CConnectionProperties,
+                            "mysql"
                         );
                         break;
                     }
@@ -103,7 +104,9 @@ export const MSelectDB = async(projectPath: string, currentPath: string, project
                             currentPath,
                             async (): Promise<void> => await createPostgresDatabase(postgresParams),
                             envParams,
-                            projectName
+                            projectName,
+                            undefined,
+                            "postgres"
                         );
                         break;
                     }
@@ -115,7 +118,9 @@ export const MSelectDB = async(projectPath: string, currentPath: string, project
                             currentPath,
                             async (): Promise<void> => await createMongoDatabase(mongoParams),
                             envParams,
-                            projectName
+                            projectName,
+                            undefined,
+                            "mongodb"
                         );
                         break;
                     }

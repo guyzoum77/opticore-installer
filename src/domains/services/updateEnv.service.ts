@@ -41,44 +41,25 @@ export class SUpdateEnv {
      * @protected
      */
     protected updateDatabaseSection(envFileLines: string[], arg: IEnvVariable): void {
-        const sectionHeader = "#DATABASE";
-        const sectionStart: number = envFileLines.findIndex((line: string): boolean => line.trim() === sectionHeader);
+        const keyMap: Record<string, string | number | undefined> = {
+            DATA_BASE_NAME: arg.dbName,
+            DATA_BASE_USER: arg.dbUser,
+            DATA_BASE_PASSWORD: arg.dbPwd,
+            DATA_BASE_HOST: arg.dbHost,
+            DATA_BASE_PORT: arg.dbPort,
+        };
 
-        if (sectionStart === -1) {
-            console.warn(`Section ${sectionHeader} not found in .env file`);
-            return;
-        }
-
-        for (let i = sectionStart + 1; i < envFileLines.length; i++) {
+        for (let i = 0; i < envFileLines.length; i++) {
             const line: string = envFileLines[i].trim();
 
-            // Stop if a new section is reach out
-            if (line.startsWith("#") && line !== sectionHeader) {
-                break;
-            }
-
-            // Ignore an empty lines or comments
+            // Ignore empty lines or comments (section banners vary between templates)
             if (!line || line.startsWith("#")) {
                 continue;
             }
 
             const [key] = line.split("=");
-            switch (key) {
-                case "DATA_BASE_NAME":
-                    envFileLines[i] = `${key}=${arg.dbName ?? ""}`;
-                    break;
-                case "DATA_BASE_USER":
-                    envFileLines[i] = `${key}=${arg.dbUser ?? ""}`;
-                    break;
-                case "DATA_BASE_PASSWORD":
-                    envFileLines[i] = `${key}=${arg.dbPwd ?? ""}`;
-                    break;
-                case "DATA_BASE_HOST":
-                    envFileLines[i] = `${key}=${arg.dbHost ?? ""}`;
-                    break;
-                case "DATA_BASE_PORT":
-                    envFileLines[i] = `${key}=${arg.dbPort ?? ""}`;
-                    break;
+            if (Object.prototype.hasOwnProperty.call(keyMap, key)) {
+                envFileLines[i] = `${key}=${keyMap[key] ?? ""}`;
             }
         }
     }
@@ -90,45 +71,31 @@ export class SUpdateEnv {
      * @protected
      */
     protected updateArgConnexionSection(envFileLines: string[], argumentConnection?: string | null): void {
-        const sectionHeader = "#ARG CONNEXION";
-        const sectionStart: number = envFileLines.findIndex((line: string): boolean => line.trim() === sectionHeader);
-
-        if (sectionStart === -1) {
-            console.warn(`Section ${sectionHeader} not found in .env file`);
-            return;
-        }
-
         // Case where argumentConnection is undefined (nothing is done)
         if (argumentConnection === undefined) {
             return;
         }
 
-        let found: boolean = false;
-        for (let i = sectionStart + 1; i < envFileLines.length; i++) {
+        const targetKey = "ARGUMENTS_DATABASE_CONNECTION";
+        for (let i = 0; i < envFileLines.length; i++) {
             const line: string = envFileLines[i].trim();
 
-            // Stop if a new section is reach out
-            if (line.startsWith("#") && line !== sectionHeader) {
-                break;
-            }
-
-            // Ignore an empty lines or comments
             if (!line || line.startsWith("#")) {
                 continue;
             }
 
             const [key] = line.split("=");
-            if (key === "ARGUMENTS_DATABASE_CONNECTION") {
+            if (key === targetKey) {
                 envFileLines[i] = `${key}=${argumentConnection ?? ""}`;
-                found = true;
-                break;
+                return;
             }
         }
 
-        // If the line does not exist but we have a value to define, we add it
-        if (!found && argumentConnection !== null) {
-            const insertPosition: number = sectionStart + 1;
-            envFileLines.splice(insertPosition, 0, `ARGUMENTS_DATABASE_CONNECTION=${argumentConnection}`);
+        // If the key does not exist but we have a value to define, we add it
+        if (argumentConnection !== null) {
+            const headerIndex: number = envFileLines.findIndex((line: string): boolean => /^#+\s*ARG\s*CONNEXION\s*$/i.test(line.trim()));
+            const insertPosition: number = headerIndex !== -1 ? headerIndex + 1 : envFileLines.length;
+            envFileLines.splice(insertPosition, 0, `${targetKey}=${argumentConnection}`);
         }
     }
 }

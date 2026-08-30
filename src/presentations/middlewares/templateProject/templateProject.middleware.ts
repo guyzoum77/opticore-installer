@@ -12,6 +12,6 @@ export const MTemplateProject = async(
     argumentConnection?: string
 ): Promise<void> => {
     await SProjectCreation(repoGit, projectPath, currentPath, projectName);
-    callback;
+    await callback([]);
     new SUpdateEnv(arg, argumentConnection);
 }

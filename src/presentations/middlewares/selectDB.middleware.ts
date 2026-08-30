@@ -16,6 +16,7 @@ import { createPostgresDatabase } from "@opticore-installer/presentations/middle
 import { createMySQLDatabase } from "@opticore-installer/presentations/middlewares/database/createMySQL.database";
 import { IEnvVariable } from "@opticore-installer/core/abstractions/interfaces/environment/envVariable.interface";
 import { IDBParams } from "@opticore-installer/core/abstractions/interfaces/params/dbParams.interface";
+import { IPostgresDBParams } from "@opticore-installer/core/abstractions/types/params/postgresDBParams.type";
 import { CConnectionProperties } from "@opticore-installer/core/abstractions/enums/constants/connectionProperties.constant";
 
 
@@ -70,51 +71,61 @@ export const MSelectDB = async(projectPath: string, currentPath: string, project
             });
             return dbChosen;
         } else {
+            const envParams: IEnvVariable = (params as ISFetchCredentials).envParams as IEnvVariable;
+
             (dbSelect as string[]).map(async (item: string): Promise<void> => {
                 switch (item) {
-                    case value.mysql:
+                    case value.mysql: {
+                        const mysqlParams: IDBParams = { ...envParams, projectPath };
                         await MTemplateProject(
                             tmpl.mysql,
                             projectPath,
                             currentPath,
-                            async (): Promise<void> => await createMySQLDatabase(
-                                //@ts-ignore
-                                (params as ISFetchCredentials).dbParams
-                            ),
-                            ((params as ISFetchCredentials).envParams as IEnvVariable),
+                            async (): Promise<void> => await createMySQLDatabase(mysqlParams),
+                            envParams,
                             projectName,
                             CConnectionProperties
                         );
                         break;
-                    case value.postgresql:
+                    }
+                    case value.postgresql: {
+                        const postgresParams: IPostgresDBParams = {
+                            host: envParams.dbHost,
+                            user: envParams.dbUser,
+                            password: envParams.dbPwd,
+                            port: envParams.dbPort,
+                            database: envParams.dbName,
+                            projectName
+                        };
                         await MTemplateProject(
                             tmpl.postgresql,
                             projectPath,
                             currentPath,
-                            async (): Promise<void> => await createPostgresDatabase(
-                                //@ts-ignore
-                                (params as ISFetchCredentials).dbParams
-                            ),
-                            (params as ISFetchCredentials).envParams as IEnvVariable,
+                            async (): Promise<void> => await createPostgresDatabase(postgresParams),
+                            envParams,
                             projectName
                         );
                         break;
-                    case value.mongodb: 
+                    }
+                    case value.mongodb: {
+                        const mongoParams: IDBParams = { ...envParams, projectPath };
                         await MTemplateProject(
                             tmpl.mongodb,
                             projectPath,
                             currentPath,
-                            async (): Promise<void> => await createMongoDatabase((params as unknown as IDBParams)),
-                            (params as ISFetchCredentials).envParams as IEnvVariable,
+                            async (): Promise<void> => await createMongoDatabase(mongoParams),
+                            envParams,
                             projectName
                         );
                         break;
+                    }
                     case value.oracle:
                         await MTemplateProject(
                             tmpl.oracle,
                             projectPath,
                             currentPath,
-                            async (): Promise<void> => {}, ((params as ISFetchCredentials).envParams as IEnvVariable),
+                            async (): Promise<void> => {},
+                            envParams,
                             projectName
                         );
                         break;
@@ -124,7 +135,7 @@ export const MSelectDB = async(projectPath: string, currentPath: string, project
                             projectPath,
                             currentPath,
                             async (): Promise<void> => {},
-                            ((params as ISFetchCredentials).envParams as IEnvVariable),
+                            envParams,
                             projectName
                         );
                         break;

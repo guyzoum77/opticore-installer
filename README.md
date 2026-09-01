@@ -8,5 +8,12 @@ This is the official installer to start new projects based on the OptiCoreJs ful
 **This installer is OptiCoreJS's runner** and newer versions. Create your OptiCoreJS project as follows:
 
 ```bash
-npm exec create-new-project
+npm i opticore-installer
+opticore-new <projectName>
+```
+
+Or without installing it first:
+
+```bash
+npx --package=opticore-installer opticore-new <projectName>
 ```

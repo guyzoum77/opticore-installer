@@ -52,6 +52,14 @@ export const SProjectCreation = async (gitRepo: string, projectPath: string, cur
         await exec("npm install");
         npmSpinner.succeed();
 
+        const cliSpinner = ora("Installing opticore CLI globally").start();
+        try {
+            await exec("npm install -g opticore-cli@latest");
+            cliSpinner.succeed();
+        } catch {
+            cliSpinner.fail("Could not install opticore-cli globally, run 'npm install -g opticore-cli@latest' manually");
+        }
+
         fs.writeFileSync(path.join(escapedPath, ".npmrc"), "loglevel=silent\n");
 
         endingMessageInfo(projectName);

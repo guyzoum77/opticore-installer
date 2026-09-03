@@ -20,7 +20,7 @@ import { SValidate } from "@opticore-installer/domains/services/validate.service
 export const installerCore: (initialProjectName?: string) => Promise<void> = async(initialProjectName?: string): Promise<void> => {
     let projectName: string | ((arg: IPromptTextServiceParams) => never);
     UWelcomeMessage();
-    intro(chalk.bgYellow.black('  Opticore Framework Installer  '));
+    intro(chalk.bgHex('#427ff5').white('  Opticore Framework Installer  '));
 
     const starter = await SOutputPromptSelect(StarterOptions);
     starter instanceof Function

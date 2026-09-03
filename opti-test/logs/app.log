@@ -1,0 +1,15 @@
+[SERVER] 08/30/2026, 00:05 | SERVER RUNNING | OPTICORE SERVER - Server is running at : [4mhttp://localhost:4200[24m
+[OPTICORE] 08/30/2026, 00:05 | Dependencies container | DEPENDENCIES_CONTAINER - Dependencies stored in container : LoggerCore, OpticoreLogger
+8/30/2026, 12:06:18 AM | INFO | [ Host ] http://localhost:4200 - [ Route ] /
+    Request content  -  [ Response ] HTML_CONTENT_HASHED 321bf865d4556483474468a28a44a19c1d7f1f1f952d1c1a0f1a34c1c449e0b4 - [ Status ]  200 
+8/30/2026, 12:06:18 AM | INFO | [ Host ] http://localhost:4200 - [ Route ] /_profiler/assets/css/home-page.css
+    Request content  -  [ Response ]  - [ Status ]  200 
+8/30/2026, 12:06:18 AM | INFO | [ Host ] http://localhost:4200 - [ Route ] /_profiler/assets/js/home-particles.js
+    Request content  -  [ Response ]  - [ Status ]  200 
+8/30/2026, 12:06:18 AM | INFO | [ Host ] http://localhost:4200 - [ Route ] /_profiler/assets/css/toolbar-standalone.css
+    Request content  -  [ Response ]  - [ Status ]  200 
+8/30/2026, 12:06:18 AM | INFO | [ Host ] http://localhost:4200 - [ Route ] /_profiler/wdt/113flckt
+    Request content  - [ params ] {"token":"113flckt"} -  [ Response ] HTML_CONTENT_HASHED 183af3fae59f77f29dcf43979838825302d75a96bf1353ffbd268da2531b7320 - [ Status ]  200 
+8/30/2026, 12:06:18 AM | ERROR |  Not found  [ Host ] http://localhost:4200 - [ Route ] /favicon.ico -  [ Response ]  - [ Status ]  404 
+8/30/2026, 12:06:18 AM | INFO | [ Host ] http://localhost:4200 - [ Route ] /_profiler/assets/js/toolbar.js
+    Request content  -  [ Response ]  - [ Status ]  200 

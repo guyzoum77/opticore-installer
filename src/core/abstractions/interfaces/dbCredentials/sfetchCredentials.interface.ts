@@ -6,7 +6,7 @@ import { IMdbCredentials } from "@opticore-installer/core/abstractions/interface
 
 
 export interface ISFetchCredentials {
-    dbCredentials: IMdbCredentials | void;
+    dbCredentials: IMdbCredentials | string | void;
     fetchParams: string;
     dbParams: ISFetchCredentialsDBParams;
     envParams: IEnvParams;

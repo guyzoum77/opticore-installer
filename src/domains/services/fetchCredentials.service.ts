@@ -26,7 +26,7 @@ export const SFetchCredentials = async(projectPath: string, currentPath?: string
     let envParams: IEnvParams;
     let fetchParams: string = "";
 
-    const dbCredentials: IMdbCredentials | void = await MDbCredentials(projectPath, currentPath, projectName);
+    const dbCredentials: IMdbCredentials | string | void = await MDbCredentials(projectPath, currentPath, projectName);
     const params: string | IMdbCredentials = transformDbCredentialsToFusedParams(dbCredentials!);
     if (params === CDbNameValue.noDbCredentials) {
         return params;

@@ -1,0 +1,1 @@
+require("./src/bootstrap/server/webApp.server");

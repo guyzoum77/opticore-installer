@@ -1,6 +1,6 @@
 {
     "name": "opticore-installer",
-    "version": "1.2.60",
+    "version": "1.2.61",
     "description": "opticore framework installer",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -43,5 +43,8 @@
     },
     "devDependencies": {
         "@types/pg": "^8.20.0"
+    },
+    "overrides": {
+        "esbuild": "^0.28.2"
     }
 }

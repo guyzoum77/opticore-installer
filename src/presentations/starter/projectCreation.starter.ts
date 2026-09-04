@@ -31,19 +31,25 @@ export const SProjectCreation = async (gitRepo: string, projectPath: string, cur
         process.chdir(escapedPath);
 
         const pkgPath: string = path.join(escapedPath, "package.json");
-        const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+        const pkg: any = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
 
         if (pkg.dependencies?.["opticore-feature-module"]) {
             pkg.dependencies["opticore-feature-component"] = pkg.dependencies["opticore-feature-module"];
             delete pkg.dependencies["opticore-feature-module"];
         }
 
-        if (pkg.dependencies) pkg.dependencies = await UpdateOpticoreDeps(exec, pkg.dependencies);
-        if (pkg.devDependencies) pkg.devDependencies = await UpdateOpticoreDeps(exec, pkg.devDependencies);
+        if (pkg.dependencies) {
+            pkg.dependencies = await UpdateOpticoreDeps(exec, pkg.dependencies);
+        }
+        if (pkg.devDependencies) {
+            pkg.devDependencies = await UpdateOpticoreDeps(exec, pkg.devDependencies);
+        }
 
         fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 4));
         const lockPath: string = path.join(escapedPath, "package-lock.json");
-        if (fs.existsSync(lockPath)) fs.unlinkSync(lockPath);
+        if (fs.existsSync(lockPath)) {
+            fs.unlinkSync(lockPath);
+        }
 
         await exec("npm uninstall ora ansi-colors cli-spinner dotenv gradient-string util tsup path fs node ts-node tslib @types/cli-spinner @clack/prompts");
         cleanSpinner.succeed();

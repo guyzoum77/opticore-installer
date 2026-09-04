@@ -12,6 +12,7 @@ export const PPostgres = (arg: IPostgresDBParams) => {
         host: arg.host ?? dotenv.config()?.parsed?.DATA_BASE_HOST,
         user: arg.user ?? dotenv.config()?.parsed?.DATA_BASE_USER,
         password: arg.password ?? dotenv.config()?.parsed?.DATA_BASE_PASSWORD,
-        port: arg.port ?? dotenv.config()?.parsed?.DATA_BASE_PORT
+        port: arg.port ?? dotenv.config()?.parsed?.DATA_BASE_PORT,
+        database: arg.database ?? dotenv.config()?.parsed?.DATA_BASE_NAME
     }
 }
